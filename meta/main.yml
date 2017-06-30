@@ -1,0 +1,14 @@
+---
+galaxy_info:
+  author: Nigel Wright
+  description: Expands the disk of a MCP cloud instance. This is designed to expand the disk on SCSI ID 0 immediately after provisioning the server.
+  license: BSD
+  min_ansible_version: 1.2
+  platforms:
+  - name: Fedora
+    versions:
+    - all
+  categories:
+  - disk
+  - system
+dependencies: []
