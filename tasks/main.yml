@@ -1,0 +1,31 @@
+---
+# tasks file for nwright-nz.expanddisk
+- name: Discover disk changes
+  shell: sleep 2 && /sbin/shutdown -r now
+  ignore_errors: True
+  async: 1 
+
+- name: Wait for server to come back online
+  local_action: wait_for host={{ inventory_hostname }} port=22 state=started delay=30 timeout=60
+  become: false 
+
+
+#this does a pretty big assumption, ie that you have extended the primary disk on SCSI ID 0. And feeding fdisk a punch of keypresses isnt the most elegant solution..
+- name: create new partition
+  shell: "echo -e 'n\np\n\n\n\nt\n3\n8e\n\nw' | fdisk /dev/sda"
+  ignore_errors: True
+
+- name: sync disk
+  shell: "partprobe"
+
+- name: Create physical volume
+  shell: "pvcreate /dev/sda3"
+
+- name: Extend volume group
+  shell: "vgextend centos /dev/sda3"
+
+- name: Extend logical volume
+  shell: "lvextend /dev/centos/root /dev/sda3"
+
+- name: Grow the file system
+  shell: "xfs_growfs /dev/centos/root"
