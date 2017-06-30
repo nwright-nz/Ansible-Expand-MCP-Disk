@@ -1,5 +1,6 @@
-Role Name
+Expand disk role
 =========
+Ansible galaxy role name: nwright-nz.expanddisk  
 
 Expand disk for Linux (Centos) for Dimension Data Managed Cloud Platform instances.
 
